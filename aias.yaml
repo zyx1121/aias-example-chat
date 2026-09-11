@@ -1,0 +1,33 @@
+# AI App Store manifest. The platform injects PORT, AIAS_MODEL_CHAT_URL,
+# AIAS_MODEL_CHAT_ID and DATABASE_URL. Nothing else reaches this app.
+
+name: example-chat
+description: Chat with one local model, history in Postgres.
+version: 0.1.0
+license: MIT
+homepage: https://github.com/zyx1121/aias-example-chat
+tags: [chat, example]
+
+runtime: node
+# Single command on purpose: build runs as an argv array, so it cannot use a
+# shell `&&`. The aias:build script does install, next build, and the copy of
+# .next/static and public into the standalone tree.
+build: ["bun", "run", "aias:build"]
+start: ["node", ".next/standalone/server.js"]
+health: /api/health
+
+models:
+  - alias: chat
+    kind: llm
+    repo: Qwen/Qwen3-8B-GGUF
+    quant: [Q4_K_M]
+    fallback: Qwen/Qwen3-4B-GGUF
+
+services:
+  postgres:
+    migrations: db/migrations
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+  # Next standalone reads HOSTNAME. Loopback only, no firewall prompt.
+  HOSTNAME: "127.0.0.1"
