@@ -54,8 +54,9 @@ Everything below is injected by the platform. Nothing is read from a config file
 | `PORT` | The port to listen on, loopback only |
 | `AIAS_MODEL_CHAT_URL` | Base URL of the model instance, ends in `/v1` |
 | `AIAS_MODEL_CHAT_ID` | The model name to put in the request body |
+| `AIAS_MODEL_CHAT_KEY` | Bearer token for that instance. It answers 401 without one |
 | `DATABASE_URL` | Postgres DSN for this app's own database |
-| `HOSTNAME` | `127.0.0.1`, declared in `aias.yaml` so Next standalone binds loopback |
+| `HOST`, `HOSTNAME` | `127.0.0.1`. The app must bind this; the platform reads the listening socket back and stops an app that bound anything else |
 
 ## Getting started
 
@@ -76,8 +77,11 @@ bun dev
 Point `AIAS_MODEL_CHAT_URL` at a real `llama-server` when you have one:
 
 ```bash
-llama-server --model Qwen3-8B-Q4_K_M.gguf --port 41199
+llama-server --model Qwen3-8B-Q4_K_M.gguf --port 41199 --api-key local-dev
 ```
+
+Set `AIAS_MODEL_CHAT_KEY` to the same value. Leave it unset against the mock
+model server, which asks for nothing.
 
 ### Production shape
 
