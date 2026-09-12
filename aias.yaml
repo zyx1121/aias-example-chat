@@ -1,5 +1,6 @@
-# AI App Store manifest. The platform injects PORT, AIAS_MODEL_CHAT_URL,
-# AIAS_MODEL_CHAT_ID and DATABASE_URL. Nothing else reaches this app.
+# AI App Store manifest. The platform injects PORT, HOST, HOSTNAME,
+# AIAS_MODEL_CHAT_URL, AIAS_MODEL_CHAT_ID, AIAS_MODEL_CHAT_KEY and
+# DATABASE_URL. Nothing else reaches this app.
 
 name: example-chat
 description: Chat with one local model, history in Postgres.
@@ -29,5 +30,3 @@ services:
 
 env:
   NEXT_TELEMETRY_DISABLED: "1"
-  # Next standalone reads HOSTNAME. Loopback only, no firewall prompt.
-  HOSTNAME: "127.0.0.1"
